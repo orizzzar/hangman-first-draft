@@ -1,42 +1,29 @@
-class Animal
-{
-    private readonly name: string
-    private readonly legs: number
-    private readonly sound: string
+window.addEventListener("load", init);
 
-    public constructor(name: string, legs: number, sound: string)
-    {
-        this.name = name
-        this.legs = legs
-        this.sound = sound
-    }
+//Global variables
+const lettersInDOM: HTMLDivElement = document.querySelector("#letters");
+const attemptInDOM: HTMLDivElement = document.querySelector("#attempt");
+let attempts: number = 5;
 
-    public getName(): string
-    {
-        return this.name
-    }
-
-    public getLegs(): number
-    {
-        return this.legs
-    }
-
-    public getSound(): string
-    {
-        return this.sound
-    }
+/**
+ * Function to initialize the programme
+ */
+function init() {
+  //write the alphabet keyboard to the DOM
+  writeAlphabetToTheDom();
 }
 
-const animals = [
-     new Animal('dog', 4, 'woof'),
-     new Animal('cat', 4, 'meow')
-]
-
-animals.forEach(
-    (animal) => console.log(
-        'A %s has %s legs and goes %s!',
-        animal.getName(),
-        animal.getLegs(),
-        animal.getSound()
-    )
-)
+/**
+ * Function to write the alphabet keyboard to the DOM
+ */
+function writeAlphabetToTheDom() {
+  const alphabet: string[] = "abcdefghijklmnopqrstuvwxyz".split("");
+  const keyboard: HTMLDivElement = document.querySelector("#keyboard");
+  alphabet.forEach(function (element, index) {
+    let divKey: HTMLDivElement = document.createElement("div");
+    divKey.id = element;
+    divKey.classList.add("key");
+    divKey.innerHTML = element;
+    keyboard.append(divKey);
+  });
+}
