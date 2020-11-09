@@ -42,6 +42,7 @@ li {
 
 .key:hover {
   background-color: red;
+  cursor: pointer;
 }
 
 .key:active {
