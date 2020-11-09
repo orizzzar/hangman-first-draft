@@ -41,6 +41,7 @@ function writeAlphabetToTheDom() {
 
 function newRound() {
   document.body.classList.remove("lost");
+  document.body.classList.remove("winner");
   attempts = 5;
   word = getRandomArrayElement(words);
   guessedLetters.length = 0;
@@ -56,6 +57,7 @@ function newRound() {
 function drawWord() {
   lettersInDOM.innerHTML = '';
   const letters: string[] = word.split('');
+  let amountGuessed: number = 0;
 
   letters.forEach((wordLetter) => {
     const letterElement: HTMLLIElement = document.createElement('li');
@@ -64,11 +66,16 @@ function drawWord() {
     guessedLetters.forEach((guessedLetter) => {
       if (wordLetter === guessedLetter) {
         letterElement.innerHTML = guessedLetter;
+        amountGuessed++;
       }
     });
 
     lettersInDOM.append(letterElement);
   });
+
+  if (amountGuessed === letters.length) {
+    win();
+  }
 }
 
 function drawAttempts() {
@@ -80,14 +87,14 @@ function getRandomArrayElement(array: any[]): any {
 }
 
 function guessLetter(letter: string) {
-  if (word.includes(letter)) {
-    guessedLetters.push(letter);
-    drawWord();
-  } else {
+  if (!word.includes(letter)) {
     if (--attempts === 0) {
       lose()
     }
     drawAttempts();
+  } else if (!guessedLetters.includes(letter)) {
+    guessedLetters.push(letter);
+    drawWord();
   }
 }
 
@@ -95,3 +102,9 @@ function lose() {
   document.body.classList.add("lost");
   setTimeout(newRound, 500);
 }
+
+function win() {
+  document.body.classList.add("winner");
+  setTimeout(newRound, 500);
+}
+

@@ -27,6 +27,7 @@ function writeAlphabetToTheDom() {
 }
 function newRound() {
     document.body.classList.remove("lost");
+    document.body.classList.remove("winner");
     attempts = 5;
     word = getRandomArrayElement(words);
     guessedLetters.length = 0;
@@ -38,16 +39,21 @@ function newRound() {
 function drawWord() {
     lettersInDOM.innerHTML = '';
     const letters = word.split('');
+    let amountGuessed = 0;
     letters.forEach((wordLetter) => {
         const letterElement = document.createElement('li');
         letterElement.innerHTML = "_";
         guessedLetters.forEach((guessedLetter) => {
             if (wordLetter === guessedLetter) {
                 letterElement.innerHTML = guessedLetter;
+                amountGuessed++;
             }
         });
         lettersInDOM.append(letterElement);
     });
+    if (amountGuessed === letters.length) {
+        win();
+    }
 }
 function drawAttempts() {
     attemptInDOM.innerHTML = attempts.toString();
@@ -56,19 +62,23 @@ function getRandomArrayElement(array) {
     return array[Math.floor(Math.random() * array.length)];
 }
 function guessLetter(letter) {
-    if (word.includes(letter)) {
-        guessedLetters.push(letter);
-        drawWord();
-    }
-    else {
+    if (!word.includes(letter)) {
         if (--attempts === 0) {
             lose();
         }
         drawAttempts();
     }
+    else if (!guessedLetters.includes(letter)) {
+        guessedLetters.push(letter);
+        drawWord();
+    }
 }
 function lose() {
     document.body.classList.add("lost");
+    setTimeout(newRound, 500);
+}
+function win() {
+    document.body.classList.add("winner");
     setTimeout(newRound, 500);
 }
 //# sourceMappingURL=app.js.map
